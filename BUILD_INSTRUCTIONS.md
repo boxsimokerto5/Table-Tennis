@@ -1,0 +1,80 @@
+# Android Build Instructions
+
+To build your signed APK and AAB for **Table Tennis World Tour**, follow these steps on your local computer.
+
+## 1. Prerequisites
+- **Node.js** installed.
+- **Android Studio** and **Android SDK** installed.
+- **Java Development Kit (JDK)** installed.
+
+## 2. Setup
+1. Download or clone your project to your local computer.
+2. Open a terminal in the project root directory.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## 3. Generate Keystore (One-time)
+If you don't have a keystore yet, run this command to generate one:
+```bash
+keytool -genkey -v -keystore android/app/my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+```
+*   **Important:** Remember the passwords you set! You will need them in the next step.
+
+## 4. Set Environment Variables
+Before building, you need to set the environment variables that the build script uses. Replace `your_password` with the passwords you set in the previous step.
+
+### Windows (PowerShell):
+```powershell
+$env:KEYSTORE_PASSWORD="your_password"
+$env:KEY_ALIAS="my-key-alias"
+$env:KEY_PASSWORD="your_password"
+```
+
+### Mac / Linux:
+```bash
+export KEYSTORE_PASSWORD="your_password"
+export KEY_ALIAS="my-key-alias"
+export KEY_PASSWORD="your_password"
+```
+
+## 5. Build Signed APK and AAB
+Run the following command to build the production assets and sync them with the Android project:
+```bash
+npm run build:android
+```
+
+Then, navigate to the `android` directory and run the Gradle build:
+```bash
+cd android
+./gradlew assembleRelease  # Generates the APK
+./gradlew bundleRelease    # Generates the AAB
+```
+
+## 7. GitHub Actions Automation
+Your project is now configured to build and sign automatically on every push to the `main` branch.
+
+### Required GitHub Secrets
+To make the automation work, you **must** add the following secrets to your GitHub repository (**Settings > Secrets and variables > Actions**):
+
+1.  **`ANDROID_KEYSTORE_BASE64`**: The base64-encoded string of your `.jks` file.
+    -   To get this string, run: `base64 -w 0 android/app/my-release-key.jks` (Linux/Mac) or `[Convert]::ToBase64String([IO.File]::ReadAllBytes("android/app/my-release-key.jks"))` (Windows PowerShell).
+2.  **`KEYSTORE_PASSWORD`**: The password you set for the keystore.
+3.  **`KEY_ALIAS`**: The alias you set for the key (e.g., `my-key-alias`).
+4.  **`KEY_PASSWORD`**: The password you set for the key.
+
+### How it works
+-   When you push code to the `main` branch, GitHub Actions will:
+    -   Install dependencies and build the web app.
+    -   Sync with Capacitor.
+    -   Decode your keystore from the secret.
+    -   Build the signed APK and AAB.
+    -   Upload the results as **Artifacts** in the Actions tab.
+
+---
+
+## Automated Build Script
+You can also use the provided `build-android.sh` script to automate the process.
+1. Make the script executable: `chmod +x build-android.sh`
+2. Run it: `./build-android.sh`

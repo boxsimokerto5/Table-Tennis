@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Table Tennis World Tour</string>
+    <string name="title_activity_main">Table Tennis World Tour</string>
+    <string name="package_name">com.tabletennis.worldtour</string>
+    <string name="custom_url_scheme">com.tabletennis.worldtour</string>
+</resources>

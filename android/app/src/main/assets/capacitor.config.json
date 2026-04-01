@@ -1,0 +1,8 @@
+{
+	"appId": "com.tabletennis.worldtour",
+	"appName": "Table Tennis World Tour",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https"
+	}
+}
