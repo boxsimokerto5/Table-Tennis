@@ -64,13 +64,20 @@ To make the automation work, you **must** add the following secrets to your GitH
 3.  **`KEY_ALIAS`**: The alias you set for the key (e.g., `my-key-alias`).
 4.  **`KEY_PASSWORD`**: The password you set for the key.
 
-### How it works
--   When you push code to the `main` branch, GitHub Actions will:
-    -   Install dependencies and build the web app.
-    -   Sync with Capacitor.
-    -   Decode your keystore from the secret.
-    -   Build the signed APK and AAB.
-    -   Upload the results as **Artifacts** in the Actions tab.
+## 8. Custom App Icon and Splash Screen
+To use the custom image you provided as your app icon:
+
+1.  Create a folder named `resources` in your project root.
+2.  Save your image as `icon-only.png` inside that folder (`resources/icon-only.png`).
+    -   *Note: For best results, use a square 1024x1024px image.*
+3.  (Optional) Save a splash screen image as `splash-only.png` in the same folder.
+4.  Run the generation command:
+    ```bash
+    npm run generate:assets
+    ```
+5.  This will automatically update all the Android icon and splash screen files.
+
+*If you are using GitHub Actions, simply push the `resources` folder with your images, and the build will automatically generate the icons for you.*
 
 ---
 
