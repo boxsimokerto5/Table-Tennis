@@ -51,6 +51,7 @@ jobs:
       - name: Build Signed APK
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew assembleRelease
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -60,6 +61,7 @@ jobs:
       - name: Build Signed AAB
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew bundleRelease
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}

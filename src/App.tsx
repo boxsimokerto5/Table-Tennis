@@ -5,8 +5,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Trophy, Play, Info, ChevronRight, RotateCcw, Target, Loader2, Image as ImageIcon, Download } from "lucide-react";
-import { generateAppIcon } from "./services/iconService";
+import { Trophy, Play, Info, ChevronRight, RotateCcw, Target, Loader2 } from "lucide-react";
 
 // --- Start.io Integration ---
 const START_APP_ID = "203319884";
@@ -165,20 +164,6 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
 
 const Instructions = ({ onStart, loadBanner }: { onStart: () => void; loadBanner: (id: string) => void }) => {
   const bannerId = "startapp-banner-container";
-  const [generatedIcon, setGeneratedIcon] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleGenerateIcon = async () => {
-    setIsGenerating(true);
-    try {
-      const iconUrl = await generateAppIcon();
-      setGeneratedIcon(iconUrl);
-    } catch (error) {
-      console.error("Failed to generate icon:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -278,61 +263,6 @@ const Instructions = ({ onStart, loadBanner }: { onStart: () => void; loadBanner
            />
            
            <p className="absolute bottom-3 text-white/40 font-black text-[9px] uppercase tracking-[0.3em]">Practice Mode</p>
-        </div>
-
-        {/* Icon Generator Section */}
-        <div className="mt-8 p-6 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-md">
-          <h3 className="text-white font-black uppercase text-sm mb-4 flex items-center gap-2">
-            <ImageIcon className="w-4 h-4 text-yellow-400" />
-            App Icon Generator
-          </h3>
-          
-          {!generatedIcon ? (
-            <button
-              onClick={handleGenerateIcon}
-              disabled={isGenerating}
-              className="w-full py-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  DESIGNING ICON...
-                </>
-              ) : (
-                "GENERATE DIGITAL ICON"
-              )}
-            </button>
-          ) : (
-            <div className="flex flex-col items-center gap-4">
-              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20"
-              >
-                <img src={generatedIcon} alt="Generated App Icon" className="w-full h-full object-cover" />
-              </motion.div>
-              <div className="flex gap-2 w-full">
-                <button
-                  onClick={handleGenerateIcon}
-                  disabled={isGenerating}
-                  className="flex-1 py-2 bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold rounded-lg border border-white/20 transition-all"
-                >
-                  REGENERATE
-                </button>
-                <a
-                  href={generatedIcon}
-                  download="icon-only.png"
-                  className="flex-1 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-[10px] font-bold rounded-lg border border-emerald-500/30 transition-all flex items-center justify-center gap-1"
-                >
-                  <Download className="w-3 h-3" />
-                  DOWNLOAD
-                </a>
-              </div>
-              <p className="text-[9px] text-white/40 text-center leading-tight">
-                Download this image and save it as <code className="text-yellow-400/60">resources/icon-only.png</code> to update your app icon.
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
